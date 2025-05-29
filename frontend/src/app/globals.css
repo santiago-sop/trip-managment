@@ -4,6 +4,9 @@ body {
 
 :root{
   --azul: #18599d;
+  --azul-titles:#102b48;
+  --azul-rgb: 24, 89, 157;
   --blanco: #fff;
   --rosado:#ef3594;
+  --gris: #929292;
 }

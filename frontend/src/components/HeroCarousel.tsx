@@ -17,7 +17,7 @@ const images = [
 export default function HeroCarousel() {
     return (
         <div className={styles.hero}>
-            <Carousel controls={false} indicators={false} fade interval={1000}>
+            <Carousel controls={false} indicators={false} fade interval={3000}>
                 {images.map((src, index) => (
                     <Carousel.Item key={index}>
                         <div style={{ position: 'relative', width: '100%', height: '500px' }}>
@@ -28,7 +28,9 @@ export default function HeroCarousel() {
                                 objectFit="cover"
                                 priority
                             />
+                             <div className={styles.overlay}></div>
                         </div>
+                       
                     </Carousel.Item>
                 ))}
             </Carousel>
