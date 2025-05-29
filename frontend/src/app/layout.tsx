@@ -4,6 +4,8 @@ import NavbarMenu from "@/components/NavbarMenu";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Ubuntu } from 'next/font/google';
+import NavbarFooter from "@/components/NavbarFooter";
+
 
 const ubuntu = Ubuntu({
   weight: ['300', '400', '500', '700'],
@@ -28,6 +30,7 @@ export default function RootLayout({
       <body className={ubuntu.className}>
         <NavbarMenu/>
         {children}
+        <NavbarFooter/>
       </body>
     </html>
   );

@@ -1,0 +1,33 @@
+.navbar {
+  position: fixed;
+  bottom: 50PX;
+  left: 5%;
+  width: 90%;
+  background: var(--azul);
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  z-index: 1000;
+  border-radius: 50PX;
+}
+
+.link {
+  color: var(--blanco);
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: var(--rosado);
+}
+
+/* Opcional: navbar arriba en desktop */
+@media (min-width: 768px) {
+  .navbar {
+    top: 0;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+  }
+}
