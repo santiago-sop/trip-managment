@@ -13,8 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "api": "file:",
-    "express": "^5.1.0",
     "mongoose": "^8.15.1",
     "multer": "^2.0.0"
   }

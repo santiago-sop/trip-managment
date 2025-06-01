@@ -1,8 +1,6 @@
 import express from 'express';
 import usersRouter from './routes/users.router.js';
 import activitiesRouter from './routes/activities.router.js';
-import uploaders from './middlewares/uploaders.js';
-import userModel from './manager/models/user.model.js';
 import mongoose from 'mongoose';
 
 const app = express();  
