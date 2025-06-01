@@ -1,0 +1,153 @@
+.navbar {
+    background-color: var(--blanco);
+}
+
+.navbarContenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.brandText {
+    color: var(--azul);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.menuBox {
+    margin-right: 10px;
+}
+
+.textWhite {
+    color: var(--blanco);
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.firstLink,
+.linkMenu {
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 200;
+    margin-left: 15px;
+    margin-right: 15px;
+    color: var(--blanco);
+}
+
+.firstLink:hover,
+.linkMenu:hover {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(5px);
+    border-bottom: solid 4px var(--blanco);
+    padding-bottom: 20px;
+}
+
+.firstLink.activeLink,
+.linkMenu.activeLink {
+    border-bottom: solid 4px var(--blanco);
+    padding-bottom: 20px;
+    transform: translateX(5px);
+}
+
+
+
+.iconBars {
+    color: var(--azul);
+    font-size: 40px;
+    display: none;
+    padding: 5px;
+    margin-right: 20px;
+}
+
+.navbarImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* responsive */
+
+
+@media screen and (max-width: 1200px) {
+    .iconBars {
+        display: block;
+    }
+
+
+    .navbarContenedor {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .brand {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .menuBox {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        background: var(--blanco);
+        align-items: center;
+    }
+
+    .menu {
+        width: 100%;
+        position: absolute;
+        top: 81px;
+        right: -200%;
+        transition: right 0.3s ease-in-out;
+    }
+
+    .active {
+        right: 0;
+    }
+
+    .firstLink,
+    .linkMenu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        font-weight: 200;
+        color: var(--azul);
+        width: 250px;
+    }
+
+    .firstLink.activeLink,
+    .linkMenu.activeLink {
+        border-bottom: solid 4px var(--azul);
+    }
+
+
+
+
+}
+
+@media screen and (max-width: 500px) {
+    .textWhite {
+        font-size: 15px;
+    }
+
+}
+
+/* Class to disable scrolling */
+.noScroll {
+    overflow: hidden;
+}

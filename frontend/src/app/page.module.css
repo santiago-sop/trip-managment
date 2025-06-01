@@ -1,0 +1,64 @@
+/* Carrusel fijo al fondo */
+.carruselContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Título centrado encima del carrusel */
+.title {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+.title h1 {
+  color: var(--blanco);
+  font-size: 2.5rem;
+}
+
+/* Contenedor de todo el contenido (que va a scrollear) */
+.mainContent {
+  position: relative;
+  z-index: 1;
+  margin-top: 40vh; /* Para que empiece justo debajo del carrusel */
+  background-color: var(--blanco);
+  padding: 40px 20px;
+  border-radius: 10px ;
+}
+
+/* Info: ubicación y fecha */
+.infoContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.location {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--azul);
+}
+
+.icon {
+  color: var(--rosado);
+}
+
+.date {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: var(--gris);
+}
