@@ -1,0 +1,90 @@
+.calendarContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  height: 80vh;
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.calendarContainer button {
+  background-color: transparent;
+  border: none;
+  color: var(--azul);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calendarContainer button:hover,
+.calendarContainer button:focus {
+  background-color: #6366f1;
+  outline: none;
+}
+
+.rbc-toolbar {
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(79, 70, 229, 0.3);
+}
+
+.rbc-event {
+  background-color: #6366f1 !important;
+  border-radius: 6px !important;
+  opacity: 0.9;
+  color: white !important;
+  padding: 2px 6px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+}
+
+.rbc-today {
+  background-color: #eef2ff !important;
+  border-radius: 6px;
+}
+
+.rbc-header {
+  background-color: #eef2ff;
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 2px solid #c7d2fe;
+  padding: 6px 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .calendarContainer {
+    height: 70vh;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendarContainer {
+    height: 60vh;
+    padding: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .rbc-calendar {
+    min-width: 600px;
+  }
+}

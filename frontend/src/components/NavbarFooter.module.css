@@ -18,9 +18,7 @@
   transition: color 0.2s;
 }
 
-.link:hover {
-  color: var(--rosado);
-}
+
 
 /* Opcional: navbar arriba en desktop */
 @media (min-width: 768px) {
