@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collection = "blogs";
+const collection = "Blogs";
 
 const blogSchema = new mongoose.Schema({
     title: {
@@ -22,6 +22,10 @@ const blogSchema = new mongoose.Schema({
             enum: ['image/jpeg', 'image/png'],
         },
     },
+    trip: [{
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Trips',
+        }],
 });
 
 const blogModel = mongoose.model(collection, blogSchema);

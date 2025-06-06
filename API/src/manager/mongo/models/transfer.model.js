@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collection = "transfers";
+const collection = "Transfers";
 
 const transferSchema = new mongoose.Schema({
     name: {
@@ -57,7 +57,11 @@ const transferSchema = new mongoose.Schema({
             type: String,
             enum: ['application/pdf', 'image/jpeg', 'image/png'],
         }
-    }
+    },
+    trip: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Trips',
+    }],
 });
 
 const transferModel = mongoose.model(collection, transferSchema);

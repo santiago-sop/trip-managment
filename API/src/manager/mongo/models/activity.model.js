@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collection = "activities";
+const collection = "Activities";
 
 const activitySchema = new mongoose.Schema({
     name: {
@@ -21,11 +21,10 @@ const activitySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
-    tripId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Trip',
-        required: true,
-    },
+    trip: [{
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Trips',
+        }],
     cost: {
         type: Number,
         default: 0,

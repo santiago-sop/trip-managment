@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const collection = 'users';
+const collection = 'Users';
 
 const userSchema = new mongoose.Schema({
     email:{
@@ -22,8 +22,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    trips:[]
+    trips:[
+        {
+            trip:{
+                type: mongoose.SchemaTypes.ObjectId,
+                ref: 'Trips',
+            },
+        }
+    ]
 })
+
+//userSchema.pre(['find', 'findOne'], function() {
+    //this.populate('trips.trip');
+//}); 
 
 const userModel = mongoose.model(collection, userSchema);
 

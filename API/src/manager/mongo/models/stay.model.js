@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const collection = "stays";
+const collection = "Stays";
 
 const staySchema = new mongoose.Schema({
     name: {
@@ -57,7 +57,11 @@ const staySchema = new mongoose.Schema({
             type: String,
             enum: ['application/pdf', 'image/jpeg', 'image/png'],
         }
-    }
+    },
+    trip: [{
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Trips',
+        }],
 });
 
 const stayModel = mongoose.model(collection, staySchema);
