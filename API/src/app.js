@@ -23,4 +23,4 @@ app.use('/api/users', usersRouter); // Users API routes
 
 app.use('/api/trips', tripsRouter); // Trips API routes
 
-app.use('/api/activities', activitiesRouter); // Activities API routes
+//app.use('/api/activities', activitiesRouter); // Activities API routes

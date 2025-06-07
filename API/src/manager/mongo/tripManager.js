@@ -1,13 +1,8 @@
 import tripModel from "./models/trip.model.js";
 
 export default class TripManager {
-    //constructor() {
-        //this.tripModel = tripModel;
-    //}
 
     async createTrip(tripData) {
-        //const trip = new this.tripModel(tripData);
-        //return await trip.save();
         return await tripModel.create(tripData); 
     }
 

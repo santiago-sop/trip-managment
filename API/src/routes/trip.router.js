@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import tripModel from "../manager/mongo/models/trip.model.js";
-import { tripService } from "../manager";
+import { tripService } from "../manager/index.js";
 
 const tripsRouter = Router();
 
