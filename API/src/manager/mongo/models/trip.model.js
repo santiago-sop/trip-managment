@@ -7,9 +7,7 @@ const tripSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String
-    },
+    description: String,
     startDate: {
         type: Date,
         required: true,
@@ -44,24 +42,9 @@ const tripSchema = new mongoose.Schema({
             default: false,
         },
     }],
-    blog:[{
-        title: String,
-        content: String,
-        date: {
-            type: Date,
-            default: Date.now,
-        },
-        photo: {
-            data: Buffer,
-            contentType: {
-                type: String,
-                enum: ['image/jpeg', 'image/png'],
-            },
-        },
-    }],
     stays:[{
         name: String,
-        starDate: Date,
+        startDate: Date,
         endDate: Date,
         checkin: {
             type: String,
@@ -82,8 +65,8 @@ const tripSchema = new mongoose.Schema({
             default: 0,
         },
         paid: {
-            type: Boolean,
-            default: false,
+            type: Number,
+            default: 0,
         },
         booking: {
             data: Buffer,
@@ -95,11 +78,11 @@ const tripSchema = new mongoose.Schema({
     }],
     transfers:[{
         name: String,
-        starDate: Date,
+        startDate: Date,
         endDate: Date,
-        starLocation: String,
+        startLocation: String,
         endLocation: String,
-        starTime: {
+        startTime: {
             type: String,
             match: /^([0-1]\d|2[0-3]):([0-5]\d)$/, // Solo permite valores como "14:30"
         },
@@ -118,8 +101,8 @@ const tripSchema = new mongoose.Schema({
             default: 0,
         },
         paid: {
-            type: Boolean,
-            default: false,
+            type: Number,
+            default: 0,
         },
         booking: {
             data: Buffer,
@@ -127,6 +110,21 @@ const tripSchema = new mongoose.Schema({
                 type: String,
                 enum: ['application/pdf', 'image/jpeg', 'image/png'],
             }
+        },
+    }],
+    blog:[{
+        title: String,
+        content: String,
+        date: {
+            type: Date,
+            default: Date.now,
+        },
+        photo: {
+            data: Buffer,
+            contentType: {
+                type: String,
+                enum: ['image/jpeg', 'image/png'],
+            },
         },
     }],
     expenses:[{
