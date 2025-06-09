@@ -13,6 +13,10 @@ export default class UserManager {
         return await userModel.findOne(opt);
     }
 
+    async getUserByEmailAndPassword(email, password) {
+        return await userModel.find({ email, password });
+    }
+
     async updateUserById(userId, updateData) {
         return await userModel.findByIdAndUpdate(userId, updateData, { new: true });
     }

@@ -45,6 +45,22 @@ usersRouter.get("/id/:id", async (req, res) => {
     }
 });
 
+usersRouter.get('/email/:email/password/:password', async (req, res) => {
+    try {
+        const { email, password } = req.params;
+        if (!email || !password) {
+            return res.status(400).send({status: "error", message: "Email and password are required"});
+        }
+        const user = await userService.getUserByEmailAndPassword(email, password);
+        if (!user || user.length === 0) {
+            return res.status(404).send({status: "error", message: "User or password is incorrect"});
+        }  
+        res.send({status: "success", payload: user[0]});
+    } catch (err) {
+        res.status(500).send({status: "error", message: err.message});
+    }
+});
+
 usersRouter.post("/", async (req, res) => {
     try {
         const user = req.body;

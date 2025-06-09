@@ -82,6 +82,10 @@ const tripSchema = new mongoose.Schema({
         endDate: Date,
         startLocation: String,
         endLocation: String,
+        vehicle: {
+            type: String,
+            enum: ['Avion', 'Tren', 'Bus', 'Auto', 'Bicileta', 'Moto', 'Caminando']
+        },
         startTime: {
             type: String,
             match: /^([0-1]\d|2[0-3]):([0-5]\d)$/, // Solo permite valores como "14:30"
