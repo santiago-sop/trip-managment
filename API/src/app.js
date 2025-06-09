@@ -3,8 +3,15 @@ import usersRouter from './routes/users.router.js';
 import tripsRouter from './routes/trip.router.js';
 import activitiesRouter from './routes/activities.router.js';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 const app = express();  
+
+// Habilita CORS para tu frontend local
+app.use(cors({
+  origin: 'http://localhost:3000', // Cambia esto según tu frontend
+  credentials: true
+}));
 
 const PORT = process.env.PORT || 8080;
 
