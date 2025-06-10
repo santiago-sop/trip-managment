@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./login.module.css";
+import { encode } from 'punycode';
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
@@ -18,8 +19,10 @@ export default function LoginPage() {
     const loggedIn = localStorage.getItem('loggedIn');
     if (loggedIn) {
       router.push(params.get('redirect') || '/'); // Redirigir si ya está autenticado
+      //router.push('/home');
     }
   }, [params, router]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +32,7 @@ export default function LoginPage() {
       let res;
 
       if (mode === 'login') {
-        res = await fetch(`https://trip-managment.onrender.com/api/users/email/${encodeURIComponent(email)}`, {
+        res = await fetch(`https://trip-managment.onrender.com/api/users/email/${encodeURIComponent(email)}/password/${encodeURIComponent(password)}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -46,7 +49,9 @@ export default function LoginPage() {
 
       if (res.ok && data.status === 'success') {
         localStorage.setItem('loggedIn', '1');
-        const redirectTo = params.get('redirect') || '/';
+        document.cookie = "loggedIn=1; path=/";
+        const redirectTo = params.get('redirect') || '/home/page.tsx';
+        //const redirectTo = '/home';
         console.log('Redirigiendo a:', redirectTo);
         router.push(redirectTo); // Ahora sí usamos router.push()
       } else {

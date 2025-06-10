@@ -9,9 +9,26 @@ import { Container } from "react-bootstrap";
 import ActivityCard from "@/components/ActivityCard";
 import { useEffect, useState } from "react";
 
+//
+import { useRouter } from "next/navigation";
+//
+
 export default function Home() {
   const [location, setLocation] = useState<string>("Cargando ubicación...");
   const [dateStr, setDateStr] = useState<string>("");
+
+  //
+  /*
+  const router = useRouter();
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('loggedIn');
+    if (!loggedIn) {
+      router.push('/login?redirect=/home');
+    }
+  }, [router]);
+  */
+//
 
   useEffect(() => {
     // Obtener fecha y formatear en español
