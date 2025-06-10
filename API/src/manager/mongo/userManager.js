@@ -10,7 +10,7 @@ export default class UserManager {
     }
 
     async getUserbyEmail(opt = {}) {
-        return await userModel.findOne(opt);
+        return await userModel.findOne(opt).populate('trips', '_id name');
     }
 
     async getUserByEmailAndPassword(email, password) {

@@ -84,6 +84,10 @@ export default class TripManager {
             return inputDate >= transferStart && inputDate <= transferEnd;
         });
 
+        const budget = this.getBudgetDailyForRestOfTrip(tripId, inputDate);
+        
+        
+        // 8. Return the data
         return {
             city: activity?.city || null,
             activity: activity?.name || null,
@@ -92,7 +96,12 @@ export default class TripManager {
                 : null,
             stay: stay
                 ? { name: stay.name, checkin: stay.checkin, stayId: stay._id }
-                : null
+                : null,
+            budget: budget
+                ? { remainingDays: budget.remainingDays,
+                    dailyBudget: budget.dailyBudget,
+                    restBudget: budget.restBudget }   
+                : null 
         };
     }
     

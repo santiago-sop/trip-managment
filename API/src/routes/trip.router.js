@@ -200,7 +200,7 @@ tripsRouter.get("/dayData/:tripId", async (req, res) => {
             console.log(`Fetching data for the specified date: ${date}`);
             dayData = await tripService.getDayDataForTrip(tripId, new Date(date));
         }
-        //console.log(dayData);
+        
         res.send({ status: "success", payload: dayData });
     } catch (err) {
         res.status(500).send({ status: "error", message: err.message });
