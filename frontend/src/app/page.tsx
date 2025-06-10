@@ -136,7 +136,7 @@ export default function Home() {
                 <div className={styles.presupuestoContainer}>
                   <h2 className={styles.titlePresupuesto}>Presupuesto</h2>
                   <div className={styles.presupuestoLine}></div>
-                  <p className={styles.descriptionPresupuesto}>€ {tripData.budget}</p>
+                  <p className={styles.descriptionPresupuesto}>€ {tripData.budget.dailyBudget}</p>
                 </div>
                 <div className={styles.actividadContainer}>
                   <h2 className={styles.titleActividad}>Actividad del día</h2>
@@ -151,14 +151,14 @@ export default function Home() {
                 <ActivityCard
                   title="Próximo traslado"
                   icon={<FaBus className="customIcon" />}
-                  location={tripData.nextTransfer?.location || "No definido"}
-                  description={tripData.nextTransfer?.description || ""}
+                  location={tripData.transfer?.name || "No definido"}
+                  description={tripData.transfer?.startTime || ""}
                 />
                 <ActivityCard
                   title="Próxima estadía"
                   icon={<FaBed className="customIcon" />}
-                  location={tripData.nextStay?.location || "No definido"}
-                  description={tripData.nextStay?.description || ""}
+                  location={tripData.stay?.name || "No definido"}
+                  description={tripData.stay?.checkin || ""}
                 />
               </>
             )}
