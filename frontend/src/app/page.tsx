@@ -13,19 +13,44 @@ const USER_EMAIL = "ivan@gmail.com"; // <-- reemplaza por el email real del usua
 export default function Home() {
   const [location, setLocation] = useState("Cargando ubicación...");
   const [dateStr, setDateStr] = useState("");
-  const [trips, setTrips] = useState<any[]>([]);
+  const [userName, setUserName] = useState("Usuario");// Estado para el nombre del usuario
+  type Trip = {
+    _id: string;
+    name: string;
+    // Agrega aquí otras propiedades relevantes del viaje si las conoces
+  };
+  
+    const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
-  const [tripData, setTripData] = useState<any>(null);
+  interface TripData {
+    budget: {
+      dailyBudget: number;
+    };
+    activity: string;
+    activities?: { _id: string; name: string }[];
+    transfer?: {
+      name?: string;
+      startTime?: string;
+    };
+    stay?: {
+      name?: string;
+      checkin?: string;
+    };
+    // Agrega aquí otras propiedades relevantes si las hay
+  }
+
+  const [tripData, setTripData] = useState<TripData | null>(null);
   const [loadingTrips, setLoadingTrips] = useState(true);
   const [loadingTripData, setLoadingTripData] = useState(false);
 
-  // Obtener viajes del usuario al cargar
+  // Obtener viajes del usuario al cargar (incluyendo nombre del usuario))
   useEffect(() => {
     setLoadingTrips(true);
     fetch(`https://trip-managment.onrender.com/api/users/email/${USER_EMAIL}`)
       .then(res => res.json())
       .then(data => {
         const user = data.payload;
+        setUserName(user?.firstName || "Usuario"); // Guardar nombre del usuario
         setTrips(user?.trips || []);
         if (user?.trips?.length === 1) {
           setSelectedTripId(user.trips[0]._id);
@@ -88,7 +113,7 @@ export default function Home() {
     }
     */
     // Ubicación fija para pruebas
-    setLocation("Barcelona, Espania");
+    setLocation("Barcelona, España");
   }, []);
 
   // Render
@@ -97,7 +122,7 @@ export default function Home() {
       <div className={styles.carruselContainer}>
         <HeroCarousel />
         <div className={styles.title}>
-          <h1>Hola Iván y Flor</h1>
+          <h1>Hola {userName}!</h1> {/* Nombre dinámico del usuario */}
         </div>
       </div>
       <div className={styles.mainContent}>
@@ -141,11 +166,13 @@ export default function Home() {
                 <div className={styles.actividadContainer}>
                   <h2 className={styles.titleActividad}>Actividad del día</h2>
                   <div className={styles.actividadLine}>{tripData.activity}</div>
+                  <div className={styles.actividadListContainer}>
                   <ul className={styles.customList}>
-                    {tripData.activities?.map((act: any) => (
-                      <li className={styles.actividadList} key={act._id}>{act.name}</li>
+                    {tripData.activities?.map((act: { _id: string; name: string }) => (
+                      <li className={styles.actividadList} key={act._id}><span className={styles.actividadNombre}>{act.name}</span></li>
                     ))}
                   </ul>
+                  </div>
                 </div>
                 {/* Puedes adaptar los siguientes ActivityCard según los datos de tu viaje */}
                 <ActivityCard

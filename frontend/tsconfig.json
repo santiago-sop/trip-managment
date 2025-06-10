@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    // Elimina o comenta la siguiente línea si no tienes tipos personalizados
+    // "typeRoots": ["./node_modules/@types", "./src/types"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

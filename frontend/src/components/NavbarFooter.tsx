@@ -9,9 +9,9 @@ const NavbarFooter = () => {
   return (
     <nav className={styles.navbar}>
   <Link href="/" className={styles.link}><MdHome /></Link>
-  <Link href="#" className={styles.link}><MdAddCircle /></Link>
+  <Link href="Add" className={styles.link}><MdAddCircle /></Link>
   <Link href="/calendar" className={styles.link}><MdCalendarMonth /></Link>
-  <Link href="#" className={styles.link}><MdToday /></Link>
+  <Link href="today" className={styles.link}><MdToday /></Link>
 </nav>
   )
 }

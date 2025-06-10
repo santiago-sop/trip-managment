@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from "./login.module.css";
-import { encode } from 'punycode';
+
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login');

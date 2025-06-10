@@ -9,6 +9,7 @@
   overflow: hidden;
 }
 
+
 /* Título centrado encima del carrusel */
 .title {
   position: absolute;
@@ -114,11 +115,9 @@
 
 
 
-.actividadList{
-  color: var(--azul);
-  margin-top: 1rem;
+.actividadList {
+  color: var(--azul); /* Cambia a cualquier color que desees */
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-.actividadList::marker {
-  color: var(--rosado);
-}

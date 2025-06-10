@@ -1,0 +1,7 @@
+.today {
+    margin-top: 9rem;
+    text-align: center;
+    font-size: 20px;
+    color: var(--azul);
+    font-weight: bold;
+}
