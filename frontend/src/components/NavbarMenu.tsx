@@ -63,20 +63,6 @@ const NavbarMenu = () => {
                                 Personas
                             </Link>
                             <Link
-                                href="/empresas"
-                                className={`${styles.linkMenu} ${activeLink === "empresas" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("empresas")}
-                            >
-                                Empresas
-                            </Link>
-                            <Link
-                                href="/bancoDelSol"
-                                className={`${styles.linkMenu} ${activeLink === "bancoDelSol" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("bancoDelSol")}
-                            >
-                                Banco del Sol
-                            </Link>
-                            <Link
                                 href="/nosotros"
                                 className={`${styles.linkMenu} ${activeLink === "nosotros" ? styles.activeLink : ""}`}
                                 onClick={() => handleLinkClick("nosotros")}
@@ -89,6 +75,20 @@ const NavbarMenu = () => {
                                 onClick={() => handleLinkClick("contacto")}
                             >
                                 Contacto
+                            </Link>
+                            <Link
+                                href="/login"
+                                className={`${styles.linkMenu} ${styles.logoutLink}`}
+                                onClick={() => {
+                                    // Elimina autenticación
+                                    localStorage.removeItem('loggedIn');
+                                    localStorage.removeItem('user');
+                                    document.cookie = "loggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                                    closeMenu();
+                                    window.location.href = "/login"; // Fuerza recarga total
+                                }}
+                            >
+                                Cerrar sesión
                             </Link>
                         </div>
                     </div>

@@ -8,19 +8,17 @@ import { Container } from "react-bootstrap";
 import ActivityCard from "@/components/ActivityCard";
 import HeroCarousel from "@/components/HeroCarousel";
 
-const USER_EMAIL = "ivan@gmail.com"; // <-- reemplaza por el email real del usuario
-
 export default function Home() {
   const [location, setLocation] = useState("Cargando ubicación...");
   const [dateStr, setDateStr] = useState("");
-  const [userName, setUserName] = useState("Usuario");// Estado para el nombre del usuario
+  //const [userName, setUserName] = useState("Usuario");// Estado para el nombre del usuario
   type Trip = {
     _id: string;
     name: string;
     // Agrega aquí otras propiedades relevantes del viaje si las conoces
   };
   
-    const [trips, setTrips] = useState<Trip[]>([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   interface TripData {
     budget: {
@@ -42,23 +40,37 @@ export default function Home() {
   const [tripData, setTripData] = useState<TripData | null>(null);
   const [loadingTrips, setLoadingTrips] = useState(true);
   const [loadingTripData, setLoadingTripData] = useState(false);
+  const [user, setUser] = useState<{ _id?: string; firstName?: string; lastName?: string; email?: string }>({});
 
-  // Obtener viajes del usuario al cargar (incluyendo nombre del usuario))
+  // 1. Cargar usuario desde localStorage
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    setUser(storedUser);
+  }, []);
+
+  // 2. Limpiar estados cuando cambia el usuario
+  useEffect(() => {
+    setTrips([]);
+    setSelectedTripId(null);
+    setTripData(null);
+  }, [user.email]);
+
+  // 3. Cuando user.email esté disponible, cargar los viajes
+  useEffect(() => {
+    if (!user.email) return; // Espera a que user.email esté definido
     setLoadingTrips(true);
-    fetch(`https://trip-managment.onrender.com/api/users/email/${USER_EMAIL}`)
+    fetch(`https://trip-managment.onrender.com/api/users/email/${user.email}`)
       .then(res => res.json())
       .then(data => {
-        const user = data.payload;
-        setUserName(user?.firstName || "Usuario"); // Guardar nombre del usuario
-        setTrips(user?.trips || []);
-        if (user?.trips?.length === 1) {
-          setSelectedTripId(user.trips[0]._id);
+        const userData = data.payload;
+        setTrips(userData?.trips || []);
+        if (userData?.trips?.length === 1) {
+          setSelectedTripId(userData.trips[0]._id);
         }
         setLoadingTrips(false);
       })
       .catch(() => setLoadingTrips(false));
-  }, []);
+  }, [user.email]);
 
   // Cuando cambia el viaje seleccionado, obtener sus datos
   useEffect(() => {
@@ -122,7 +134,7 @@ export default function Home() {
       <div className={styles.carruselContainer}>
         <HeroCarousel />
         <div className={styles.title}>
-          <h1>Hola {userName}!</h1> {/* Nombre dinámico del usuario */}
+          <h1>Hola {user.firstName}!</h1> {/* Nombre dinámico del usuario */}
         </div>
       </div>
       <div className={styles.mainContent}>

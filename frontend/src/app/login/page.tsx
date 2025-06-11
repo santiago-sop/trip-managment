@@ -50,10 +50,10 @@ export default function LoginPage() {
       if (res.ok && data.status === 'success') {
         localStorage.setItem('loggedIn', '1');
         document.cookie = "loggedIn=1; path=/";
-        const redirectTo = params.get('redirect') || '/home/page.tsx';
-        //const redirectTo = '/home';
-        console.log('Redirigiendo a:', redirectTo);
-        router.push(redirectTo); // Ahora sí usamos router.push()
+        // Guarda los datos del usuario (ajusta según tu respuesta)
+        localStorage.setItem('user', JSON.stringify(data.payload));
+        const redirectTo = params.get('redirect') || '/';
+        router.push(redirectTo);
       } else {
         setMsg(data.message || 'Error en la autenticación');
       }
