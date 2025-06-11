@@ -84,9 +84,10 @@ export default class TripManager {
             return inputDate >= transferStart && inputDate <= transferEnd;
         });
 
-        const budget = this.getBudgetDailyForRestOfTrip(tripId, inputDate);
+        const budget = await this.getBudgetDailyForRestOfTrip(tripId, inputDate);
+        console.log(budget);
         
-        
+
         // 8. Return the data
         return {
             city: activity?.city || null,
