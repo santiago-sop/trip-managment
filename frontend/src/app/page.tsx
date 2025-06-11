@@ -59,6 +59,7 @@ export default function Home() {
   useEffect(() => {
     if (!user.email) return; // Espera a que user.email esté definido
     setLoadingTrips(true);
+    console.log("Consultando viajes para:", user.email);
     fetch(`https://trip-managment.onrender.com/api/users/email/${user.email}`)
       .then(res => res.json())
       .then(data => {
@@ -68,6 +69,7 @@ export default function Home() {
           setSelectedTripId(userData.trips[0]._id);
         }
         setLoadingTrips(false);
+        console.log("Viajes recibidos:", userData?.trips);
       })
       .catch(() => setLoadingTrips(false));
   }, [user.email]);
@@ -177,13 +179,11 @@ export default function Home() {
                 </div>
                 <div className={styles.actividadContainer}>
                   <h2 className={styles.titleActividad}>Actividad del día</h2>
-                  <div className={styles.actividadLine}>{tripData.activity}</div>
+                  <div className={styles.actividadLine}></div>
                   <div className={styles.actividadListContainer}>
-                  <ul className={styles.customList}>
-                    {tripData.activities?.map((act: { _id: string; name: string }) => (
-                      <li className={styles.actividadList} key={act._id}><span className={styles.actividadNombre}>{act.name}</span></li>
-                    ))}
-                  </ul>
+                    <ul className={styles.customList}>
+                      <li className={styles.actividadList}><span className={styles.actividadNombre}>{tripData.activity}</span></li>
+                    </ul>
                   </div>
                 </div>
                 {/* Puedes adaptar los siguientes ActivityCard según los datos de tu viaje */}
