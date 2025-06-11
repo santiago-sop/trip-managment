@@ -65,25 +65,31 @@ export default function LoginPage() {
 
   return (
     <div className={styles.authContainer}>
-      <h1>{mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}</h1>
-      <form onSubmit={handleSubmit}>
-        {mode === 'signup' && (
-          <>
-            <input type="text" placeholder="Nombre" value={firstName} onChange={e => setFirstName(e.target.value)} required />
-            <input type="text" placeholder="Apellido" value={lastName} onChange={e => setLastName(e.target.value)} required />
-          </>
-        )}
-        <input type="email" placeholder="Correo electrónico" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} required />
-        <button type="submit">{mode === 'login' ? 'Entrar' : 'Registrarse'}</button>
-      </form>
-      <p className="msg">{msg}</p>
-      <p>
-        {mode === 'login'
-          ? <>¿No tienes cuenta? <button onClick={() => setMode('signup')}>Regístrate</button></>
-          : <>¿Ya tienes cuenta? <button onClick={() => setMode('login')}>Ingresar</button></>
-        }
-      </p>
+      <h1>Trip-Managment</h1>
+      <div className={styles.formContainer}>
+        <h2>{mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta'}</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.form}>
+            {mode === 'signup' && (
+
+              <>
+                <input className={styles.myInput} type="text" placeholder="Nombre" value={firstName} onChange={e => setFirstName(e.target.value)} required />
+                <input className={styles.myInput} type="text" placeholder="Apellido" value={lastName} onChange={e => setLastName(e.target.value)} required />
+              </>
+            )}
+            <input className={styles.myInput} type="email" placeholder="Correo electrónico" value={email} onChange={e => setEmail(e.target.value)} required />
+            <input className={styles.myInput} type="password" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit">{mode === 'login' ? 'Entrar' : 'Registrarse'}</button>
+        </form>
+        <p className="msg">{msg}</p>
+        <p>
+          {mode === 'login'
+            ? <>¿No tienes cuenta? <button onClick={() => setMode('signup')}>Regístrate</button></>
+            : <>¿Ya tienes cuenta? <button onClick={() => setMode('login')}>Ingresar</button></>
+          }
+        </p>
+      </div>
     </div>
   );
 }
