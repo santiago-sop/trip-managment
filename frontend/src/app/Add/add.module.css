@@ -1,13 +1,5 @@
-.add {
-    margin-top: 9rem;
-    text-align: center;
-    font-size: 20px;
-    color: var(--azul);
-    font-weight: bold;
-}
-
 .addContainer {
-  max-width: 500px;
+
   margin: auto;
   padding: 2rem;
   background: #fff;
@@ -16,10 +8,14 @@
   text-align: center;
 }
 
+.addContainer {
+  margin-bottom: 3rem; /* o el alto de tu footer */
+}
+
 .addContainer h1 {
-  color: #4f46e5; 
-  margin-bottom: 1rem; 
-} 
+  color: #4f46e5;
+  margin-bottom: 1rem;
+}
 
 .label {
   font-weight: bold;
@@ -27,6 +23,18 @@
   text-align: left;
   margin: 1rem 0 0.5rem;
 }
+
+/* .select, input, textarea { */
+  /* width: 100%; */
+  /* padding: 0.75rem; */
+  /* margin-bottom: 1rem; */
+  /* border: 1px solid #ccc; */
+  /* border-radius: 8px; */
+/* } */
+/*  */
+/* textarea { */
+  /* resize: none; */
+/* } */
 
 .submitButton {
   width: 100%;
@@ -38,4 +46,8 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
+}
+
+.submitButton:hover {
+  background: #3b39cc;
 }
