@@ -56,25 +56,25 @@ const NavbarMenu = () => {
                                 Inicio
                             </Link>
                             <Link
-                                href="/personas"
-                                className={`${styles.linkMenu} ${activeLink === "personas" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("personas")}
+                                href="/user"
+                                className={`${styles.linkMenu} ${activeLink === "user" ? styles.activeLink : ""}`}
+                                onClick={() => handleLinkClick("user")}
                             >
-                                Personas
+                                Usuario
                             </Link>
                             <Link
-                                href="/nosotros"
-                                className={`${styles.linkMenu} ${activeLink === "nosotros" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("nosotros")}
+                                href="/addTrip"
+                                className={`${styles.linkMenu} ${activeLink === "addTrip" ? styles.activeLink : ""}`}
+                                onClick={() => handleLinkClick("addTrip")}
                             >
-                                Nosotros
+                                Agregar viaje
                             </Link>
                             <Link
-                                href="/contacto"
-                                className={`${styles.linkMenu} ${activeLink === "contacto" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("contacto")}
+                                href="/"
+                                className={`${styles.linkMenu} ${activeLink === "changeTrip" ? styles.activeLink : ""}`}
+                                onClick={() => handleLinkClick("changeTrip")}
                             >
-                                Contacto
+                                Cambiar de viaje
                             </Link>
                             <Link
                                 href="/login"

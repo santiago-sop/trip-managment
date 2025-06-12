@@ -41,7 +41,7 @@ tripsRouter.post("/:user_email", async (req, res) => {
         const newTrip = await tripService.createTrip(tripData);
 
         // Agregar el viaje al usuario
-        await userService.addTripToUser(user_id, newTrip._id);
+        await userService.pushTripToUser(user_id, newTrip._id);
 
         res.send({ status: "success", payload: newTrip });
     } catch (err) {
