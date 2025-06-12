@@ -6,12 +6,13 @@ export default class TripManager {
         return await tripModel.create(tripData); 
     }
 
+
     async getTripById(tripId) {
         return await tripModel.findById(tripId).populate('participants');
     }
 
-    getTrip(opt={}){
-        return tripModel.findOne(opt).populate('participants');
+    async getTrip(opt={}){
+        return await tripModel.findOne(opt).populate('participants');
     }
 
     async updateTrip(tripId, updateData) {
@@ -122,6 +123,7 @@ export default class TripManager {
         );
     }
 
+    //Activities
     async addActivityToTrip(tripId, activity) {
         return await tripModel.findByIdAndUpdate(
             tripId,
@@ -130,26 +132,24 @@ export default class TripManager {
         );
     }
 
-    async addStayToTrip(tripId, stay) {
-        return await tripModel.findByIdAndUpdate(
-            tripId,
-            { $push: { stays: stay } },
+    async getActivitiesForTrip(tripId) {
+        const trip = await tripModel.findById(tripId).populate('activities');
+        if (!trip) throw new Error('Trip not found');
+        return trip.activities;
+    }
+
+    async modifyActivityInTrip(tripId, activityId, updateData) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'activities._id': activityId },
+            { $set: { 'activities.$': updateData } },
             { new: true }
         );
     }
 
-    async addTransferToTrip(tripId, transfer) {
-        return await tripModel.findByIdAndUpdate(
-            tripId,
-            { $push: { transfers: transfer } },
-            { new: true }
-        );
-    }
-
-    async addBlogToTrip(tripId, blog) {
-        return await tripModel.findByIdAndUpdate(
-            tripId,
-            { $push: { blog: blog } },
+    async deleteActivity(tripId, activityId) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'activities._id': activityId },
+            { $pull: { activities: { _id: activityId } } },
             { new: true }
         );
     }
@@ -162,6 +162,37 @@ export default class TripManager {
         );
     }
 
+    //Stays
+    async addStayToTrip(tripId, stay) {
+        return await tripModel.findByIdAndUpdate(
+            tripId,
+            { $push: { stays: stay } },
+            { new: true }
+        );
+    }
+
+    async getStaysForTrip(tripId) {
+        const trip = await tripModel.findById(tripId).populate('stays');
+        if (!trip) throw new Error('Trip not found');
+        return trip.stays;
+    }
+    async modifyStayInTrip(tripId, stayId, updateData) {
+        if ('_id' in updateData) delete updateData._id;
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'stays._id': stayId },
+            { $set: { 'stays.$': updateData } },
+            { new: true }
+        );
+    }
+    
+    async deleteStay(tripId, stayId) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'stays._id': stayId },
+            { $pull: { stays: { _id: stayId } } },
+            { new: true }
+        );
+    }
+
     async deleteStayFromTrip(tripId, stayId) {
         return await tripModel.findByIdAndUpdate(
             tripId,
@@ -170,10 +201,72 @@ export default class TripManager {
         );
     }
 
+    //Transfers
+    async addTransferToTrip(tripId, transfer) {
+        return await tripModel.findByIdAndUpdate(
+            tripId,
+            { $push: { transfers: transfer } },
+            { new: true }
+        );
+    }
+    
+    async getTransfersForTrip(tripId) {
+        const trip = await tripModel.findById(tripId).populate('transfers');
+        if (!trip) throw new Error('Trip not found');
+        return trip.transfers;
+    }
+
+    async modifyTransferInTrip(tripId, transferId, updateData) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'transfers._id': transferId },
+            { $set: { 'transfers.$': updateData } },
+            { new: true }
+        );
+    }
+    
+    async deleteTransfer(tripId, transferId) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'transfers._id': transferId },
+            { $pull: { transfers: { _id: transferId } } },
+            { new: true }
+        );
+    }
+
     async deleteTransferFromTrip(tripId, transferId) {
         return await tripModel.findByIdAndUpdate(
             tripId,
             { $pull: { transfers: { _id: transferId } } },
+            { new: true }
+        );
+    }
+    
+    //Blogs
+    async addBlogToTrip(tripId, blog) {
+        return await tripModel.findByIdAndUpdate(
+            tripId,
+            { $push: { blog: blog } },
+            { new: true }
+        );
+    }
+
+    async getBlogsForTrip(tripId) {
+        const trip = await tripModel.findById(tripId).populate('blog');
+        if (!trip) throw new Error('Trip not found');
+        return trip.blog;
+    }
+
+    async modifyBlogInTrip(tripId, blogId, updateData) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'blog._id': blogId },
+            { $set: { 'blog.$': updateData } },
+                { new: true }
+        );
+    }
+
+    async deleteBlog(tripId, blogId) {
+        return await tripModel.findOneAndUpdate(
+            { _id: tripId, 'blog._id': blogId },
+            { $pull: { blog: { _id: blogId } } },
             { new: true }
         );
     }
@@ -186,6 +279,7 @@ export default class TripManager {
         );
     }
 
+    // Budget management
     async getBudgetForTrip(tripId) {
         const trip = await tripModel.findById(tripId);
         if (!trip) throw new Error('Trip not found');

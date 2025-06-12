@@ -1,7 +1,6 @@
 import express from 'express';
 import usersRouter from './routes/users.router.js';
 import tripsRouter from './routes/trip.router.js';
-import activitiesRouter from './routes/activities.router.js';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
@@ -29,5 +28,3 @@ app.use(express.static('./src/public')); // Serve static files from the 'public'
 app.use('/api/users', usersRouter); // Users API routes
 
 app.use('/api/trips', tripsRouter); // Trips API routes
-
-//app.use('/api/activities', activitiesRouter); // Activities API routes

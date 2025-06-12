@@ -104,5 +104,18 @@ usersRouter.delete("/email/:email", async (req, res) => {
     }
 });
 
+usersRouter.post("/trip/:userId/:tripId", async (req, res) => {
+    try {
+        const { userId, tripId } = req.params;
+        if (!userId || !tripId) {
+            return res.status(400).send({status: "error", message: "User ID and Trip ID are required"});
+        }
+        const updatedUser = await userService.pushTripToUser(userId, tripId);
+        res.send({status: "success", payload: updatedUser});
+    } catch (err) {
+        res.status(500).send({status: "error", message: err.message});
+    }
+});
+
 export default usersRouter;
 // This file defines the users router for handling user-related API requests.

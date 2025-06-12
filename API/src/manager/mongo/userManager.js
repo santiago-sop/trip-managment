@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import userModel from './models/user.model.js';
 
 export default class UserManager {
@@ -10,7 +11,13 @@ export default class UserManager {
     }
 
     async getUserbyEmail(opt = {}) {
+        // trips es ahora un array de ObjectId, el populate funciona directo
         return await userModel.findOne(opt).populate('trips', '_id name');
+    }
+
+    async getUserByTripId(tripId) {
+        // trips es ahora un array de ObjectId, la consulta es directa
+        return await userModel.findOne({ trips: new mongoose.Types.ObjectId(tripId) }).populate('trips', '_id name');
     }
 
     async getUserByEmailAndPassword(email, password) {
@@ -38,11 +45,20 @@ export default class UserManager {
     }
 
     async pushTripToUser(userId, tripId) {
+        // trips es ahora un array de ObjectId, el push es directo
         return await userModel.findByIdAndUpdate(
             userId,
-            { $push: { trips: tripId } },
+            { $push: { trips: new mongoose.Types.ObjectId(tripId) } },
+            { new: true }
+        );
+    }
+
+    async pullTripFromUser(userId, tripId) {
+        // trips es ahora un array de ObjectId, el pull es directo
+        return await userModel.findByIdAndUpdate(
+            userId,
+            { $pull: { trips: new mongoose.Types.ObjectId(tripId) } },
             { new: true }
         );
     }
 }
-        
