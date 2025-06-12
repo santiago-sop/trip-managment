@@ -116,8 +116,17 @@
 
 
 .actividadList {
-  color: var(--azul); /* Cambia a cualquier color que desees */
+  color: var(--rosado); 
   font-size: 1.2rem;
   font-weight: 600;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.actividadNombre{
+  color: var(--azul);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-top: 1rem;
 }
 
