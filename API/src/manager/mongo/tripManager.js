@@ -22,8 +22,18 @@ export default class TripManager {
         return await tripModel.findByIdAndDelete(tripId);
     }
 
-    async getAllTrips() {
-        return await tripModel.find().populate('participants');
+    async getAllTrips(email = null) {
+        if (email) {
+            // Buscar todos los viajes donde algún participante tenga ese email
+            return await tripModel.find()
+                .populate({
+                    path: 'participants',
+                    match: { email: email }
+                })
+                .then(trips => trips.filter(trip => trip.participants.length > 0));
+        } else {
+            return await tripModel.find().populate('participants');
+        }
     }
     
     async getTripsByUserId(userId) {

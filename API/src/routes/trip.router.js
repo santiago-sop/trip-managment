@@ -15,7 +15,7 @@ tripsRouter.get("/:user_email", async (req, res) => {
         if (!user) {
             return res.status(404).send({ status: "error", message: "User not found" });
         }
-        const trips = await tripService.getAllTrips( { participants: user_email });
+        const trips = await tripService.getAllTrip( { participants: user_email });
         if (!trips || trips.length === 0) {
             return res.status(404).send({ status: "error", message: "No trips found for this user" });
         }

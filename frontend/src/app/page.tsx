@@ -81,7 +81,7 @@ export default function Home() {
       return;
     }
     setLoadingTripData(true);
-    const fecha = "2025-06-08"; // O la fecha que quieras consultar
+    const fecha =new Date(); // "2025-06-08"; // O la fecha que quieras consultar
     fetch(`https://trip-managment.onrender.com/api/trips/dayData/${selectedTripId}?date=${fecha}`)
       .then(res => res.json())
       .then(data => {

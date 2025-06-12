@@ -18,6 +18,22 @@ export default function AddTripPage() {
     setUserEmail(storedUser.email || "");
   }, []);
 
+  const formatDateForInput = (dateStr: string) => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${dd}/${mm}/${yyyy}`;
+  };
+
+  const formatDateForBackend = (dateStr: string) => {
+    // dateStr en formato dd/MM/yyyy
+    if (!dateStr) return "";
+    const [dd, mm, yyyy] = dateStr.split("/");
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTrip(prev => ({ ...prev, [name]: name === "budget" ? Number(value) : value }));
@@ -27,10 +43,15 @@ export default function AddTripPage() {
     e.preventDefault();
     setMsg("Agregando viaje...");
     try {
+      const tripToSend = {
+        ...trip,
+        startDate: formatDateForBackend(trip.startDate),
+        endDate: formatDateForBackend(trip.endDate)
+      };
       const res = await fetch(`https://trip-managment.onrender.com/api/trips/${userEmail}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(trip)
+        body: JSON.stringify(tripToSend)
       });
       const data = await res.json();
       if (res.ok && data.status === "success") {
@@ -46,7 +67,7 @@ export default function AddTripPage() {
 
   return (
     <div style={{ maxWidth: 500, margin: "2rem auto" }}>
-      <h2>Agregar viaje</h2>
+      <h1>Agregar viaje</h1>
       <form onSubmit={handleSubmit}>
         <label>Nombre:</label>
         <input name="name" type="text" value={trip.name} onChange={handleChange} required style={{ width: "100%" }} />
