@@ -18,14 +18,6 @@ export default function AddTripPage() {
     setUserEmail(storedUser.email || "");
   }, []);
 
-  const formatDateForInput = (dateStr: string) => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${dd}/${mm}/${yyyy}`;
-  };
 
   const formatDateForBackend = (dateStr: string) => {
     // dateStr en formato dd/MM/yyyy
@@ -46,7 +38,7 @@ export default function AddTripPage() {
       const tripToSend = {
         ...trip,
         startDate: formatDateForBackend(trip.startDate),
-        endDate: formatDateForBackend(trip.endDate)
+
       };
       const res = await fetch(`https://trip-managment.onrender.com/api/trips/${userEmail}`, {
         method: "POST",
@@ -60,7 +52,7 @@ export default function AddTripPage() {
       } else {
         setMsg(data.message || "Error al agregar viaje");
       }
-    } catch (err) {
+    } catch {
       setMsg("Error de conexión");
     }
   };
