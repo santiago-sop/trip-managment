@@ -155,6 +155,22 @@ tripsRouter.delete("/participant/:tripId/:userId", async (req, res) => {
 });
 
 //Activities
+tripsRouter.get("activity/:activityId", async (req, res) => {
+    try {
+        const { activityId } = req.params;
+        if (!activityId) {
+            return res.status(400).send({ status: "error", message: "Activity ID is required" });
+        }
+        const activity = await tripService.getActivityById(activityId);
+        if (!activity) {
+            return res.status(404).send({ status: "error", message: "Activity not found" });
+        }
+        res.send({ status: "success", payload: activity });
+    } catch (err) {
+        res.status(500).send({ status: "error", message: err.message });
+    }
+});
+
 tripsRouter.get("/activity/:tripId", async (req, res) => {
     try {  
         const { tripId } = req.params;
@@ -228,6 +244,22 @@ tripsRouter.delete("/activity/:tripId/:activityId", async (req, res) => {
 });
 
 //Stays
+tripsRouter.get("/stay/:stayId", async (req, res) => {
+    try {
+        const { stayId } = req.params;
+        if (!stayId) {
+            return res.status(400).send({ status: "error", message: "Stay ID is required" });
+        }
+        const stay = await tripService.getStayById(stayId);
+        if (!stay) {
+            return res.status(404).send({ status: "error", message: "Stay not found" });
+        }
+        res.send({ status: "success", payload: stay });
+    } catch (err) {
+        res.status(500).send({ status: "error", message: err.message });
+    }
+});
+
 tripsRouter.get("/stay/:tripId", async (req, res) => {
     try {
         const { tripId } = req.params;
@@ -325,6 +357,22 @@ tripsRouter.delete("/stay/:tripId/:stayId", async (req, res) => {
 });
 
 //Transfers
+tripsRouter.get("/transfer/:transferID", async (req, res) => {
+    try {
+        const { transferID } = req.params;
+        if (!transferID) {
+            return res.status(400).send({ status: "error", message: "Transfer ID is required" });
+        }
+        const transfer = await tripService.getTransferById(transferID);
+        if (!transfer) {
+            return res.status(404).send({ status: "error", message: "Transfer not found" });
+        }
+        res.send({ status: "success", payload: transfer });
+    } catch (err) {
+        res.status(500).send({ status: "error", message: err.message });
+    }
+});
+
 tripsRouter.get("/transfer/:tripId", async (req, res) => {
     try {
         const { tripId } = req.params;

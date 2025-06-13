@@ -133,6 +133,10 @@ export default class TripManager {
         );
     }
 
+    async getActivityById(activityId) {
+        return await tripModel.findOne({ 'activities._id': activityId }, { 'activities.$': 1 });
+    }
+
     async getActivitiesForTrip(tripId) {
         const trip = await tripModel.findById(tripId).populate('activities');
         if (!trip) throw new Error('Trip not found');
@@ -172,6 +176,10 @@ export default class TripManager {
         );
     }
 
+    async getStayById(stayId) {
+        return await tripModel.findOne({ 'stays._id': stayId }, { 'stays.$': 1 });
+    }
+
     async getStaysForTrip(tripId) {
         const trip = await tripModel.findById(tripId).populate('stays');
         if (!trip) throw new Error('Trip not found');
@@ -209,6 +217,10 @@ export default class TripManager {
             { $push: { transfers: transfer } },
             { new: true }
         );
+    }
+
+    async getTransferById(transferId) {
+        return await tripModel.findOne({ 'transfers._id': transferId }, { 'transfers.$': 1 });
     }
     
     async getTransfersForTrip(tripId) {

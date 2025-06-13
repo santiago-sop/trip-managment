@@ -3,15 +3,20 @@
 import { useEffect, useState } from "react";
 import styles from './page.module.css';
 import { BsGeoAltFill } from "react-icons/bs";
-import { FaBus, FaBed } from "react-icons/fa";
+import { FaBus, FaBed, FaArrowRight } from "react-icons/fa";
 import { Container } from "react-bootstrap";
 import ActivityCard from "@/components/ActivityCard";
 import HeroCarousel from "@/components/HeroCarousel";
 import TripSelectModal from "@/components/TripSelectModal";
+import Link from "next/link";
 
 export default function Home() {
   const [location, setLocation] = useState("Cargando ubicación...");
-  const [dateStr, setDateStr] = useState("");
+  // Inicializar dateStr con la fecha de hoy en formato yyyy-MM-dd
+  const today = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+  const [dateStr, setDateStr] = useState(todayStr);
   type Trip = {
     _id: string;
     name: string;
@@ -21,6 +26,8 @@ export default function Home() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   const [showTripModal, setShowTripModal] = useState(false);
+  const [showDateModal, setShowDateModal] = useState(false);
+  const [tempDate, setTempDate] = useState(dateStr);
   interface TripData {
     budget: {
       dailyBudget: number;
@@ -91,22 +98,21 @@ export default function Home() {
       .catch(() => setLoadingTrips(false));
   }, [user.email]);
 
-  // Cuando cambia el viaje seleccionado, obtener sus datos
+  // Cuando cambia el viaje seleccionado o la fecha, obtener sus datos
   useEffect(() => {
     if (!selectedTripId) {
       setTripData(null);
       return;
     }
     setLoadingTripData(true);
-    const fecha = new Date();
-    fetch(`https://trip-managment.onrender.com/api/trips/dayData/${selectedTripId}?date=${fecha}`)
+    fetch(`https://trip-managment.onrender.com/api/trips/dayData/${selectedTripId}?date=${dateStr}`)
       .then(res => res.json())
       .then(data => {
         setTripData(data.payload);
         setLoadingTripData(false);
       })
       .catch(() => setLoadingTripData(false));
-  }, [selectedTripId]);
+  }, [selectedTripId, dateStr]);
 
   // Sincronizar selectedTripId con localStorage
   useEffect(() => {
@@ -120,25 +126,15 @@ export default function Home() {
   }, [selectedTripId]);
 
   // Geolocalización y fecha (igual que antes)
+ 
   useEffect(() => {
-    const fechaHoy = new Date();
-    const opcionesFecha: Intl.DateTimeFormatOptions = {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    const fechaFormateada = new Intl.DateTimeFormat("es-ES", opcionesFecha).format(fechaHoy);
-    setDateStr(fechaFormateada);
-
     // Obtener ubicación con geolocalización
-    /*
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const { latitude, longitude } = pos.coords;
           try {
-            // Llamar a API de geocoding inverso para obtener ciudad
+            // Llamar a API de geocoding inverso para obtener ciudad y país
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
             const data = await res.json();
             const ciudad = data.address.city || data.address.town || data.address.village || "Ubicación desconocida";
@@ -148,15 +144,18 @@ export default function Home() {
             setLocation("No se pudo obtener la ubicación");
           }
         },
-        () => setLocation("Permiso de ubicación denegado")
+        () => setLocation(tripData?.city ? tripData.city : "Permiso de ubicación denegado")
       );
     } else {
-      setLocation("Geolocalización no soportada");
+      setLocation(tripData?.city ? tripData.city : "Geolocalización no soportada");
     }
-    */
-    // Ubicación fija para pruebas
-    setLocation("Barcelona, España");
-  }, []);
+  }, [tripData?.city]);
+  // Función para mostrar la fecha en formato dd/MM/yyyy
+  const formatDisplayDate = (isoDate: string) => {
+    if (!isoDate) return '';
+    const [yyyy, mm, dd] = isoDate.split('-');
+    return `${dd}/${mm}/${yyyy}`;
+  };
 
   // Render
   return (
@@ -191,7 +190,37 @@ export default function Home() {
             <BsGeoAltFill className={styles.icon} />
             <span>{location}</span>
           </div>
-          <div className={styles.date}>{dateStr}</div>
+          {/* Mostrar la fecha como botón y popup para seleccionar */}
+          <div className={styles.date}>
+            <button
+              style={{ fontSize: '1em', padding: 4, border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 500 }}
+              onClick={() => { setTempDate(dateStr); setShowDateModal(true); }}
+            >
+              {formatDisplayDate(dateStr)}
+            </button>
+            {showDateModal && (
+              <div style={{
+                position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+                background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+              }}>
+                <div style={{ background: '#fff', padding: 24, borderRadius: 10, minWidth: 260, boxShadow: '0 2px 16px #0003', display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <input
+                    type="date"
+                    value={tempDate}
+                    onChange={e => setTempDate(e.target.value)}
+                    style={{ fontSize: '1em', padding: 4 }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                    <button onClick={() => setShowDateModal(false)} style={{ padding: '6px 16px' }}>Cancelar</button>
+                    <button
+                      onClick={() => { setDateStr(tempDate); setShowDateModal(false); }}
+                      style={{ padding: '6px 16px', background: '#007bff', color: '#fff', border: 'none', borderRadius: 4 }}
+                    >Aceptar</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div>
           <Container>
@@ -208,27 +237,42 @@ export default function Home() {
                   <div className={styles.presupuestoLine}></div>
                   <p className={styles.descriptionPresupuesto}>€ {tripData.budget.dailyBudget}</p>
                 </div>
-                <div className={styles.actividadContainer}>
-                  <h2 className={styles.titleActividad}>Actividad del día</h2>
-                  <div className={styles.actividadLine}></div>
-                  <div className={styles.actividadListContainer}>
-                    <ul className={styles.customList}>
-                      <li className={styles.actividadList}><span className={styles.actividadNombre}>{tripData.activity}</span></li>
-                    </ul>
+                <div className={styles.actividadContainer} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <h2 className={styles.titleActividad}>Actividad del día</h2>
+                    <div className={styles.actividadLine}></div>
+                    <div className={styles.actividadListContainer}>
+                      <ul className={styles.customList}>
+                        <li className={styles.actividadList}><span className={styles.actividadNombre}>{tripData.activity}</span></li>
+                      </ul>
+                    </div>
                   </div>
+                  <Link href="/activity" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center' }}>
+                    <FaArrowRight />
+                  </Link>
                 </div>
-                <ActivityCard
-                  title="Próximo traslado"
-                  icon={<FaBus className="customIcon" />}
-                  location={tripData.transfer?.name || "No definido"}
-                  description={tripData.transfer?.startTime || ""}
-                />
-                <ActivityCard
-                  title="Próxima estadía"
-                  icon={<FaBed className="customIcon" />}
-                  location={tripData.stay?.name || "No definido"}
-                  description={tripData.stay?.checkin || ""}
-                />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <ActivityCard
+                    title="Próximo traslado"
+                    icon={<FaBus className="customIcon" />}
+                    location={tripData.transfer?.name || "No definido"}
+                    description={tripData.transfer?.startTime || ""}
+                  />
+                  <Link href="/transfer" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center', alignSelf: 'flex-start' }}>
+                    <FaArrowRight />
+                  </Link>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <ActivityCard
+                    title="Próxima estadía"
+                    icon={<FaBed className="customIcon" />}
+                    location={tripData.stay?.name || "No definido"}
+                    description={tripData.stay?.checkin || ""}
+                  />
+                  <Link href="/stay" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center', alignSelf: 'flex-start' }}>
+                    <FaArrowRight />
+                  </Link>
+                </div>
               </>
             )}
           </Container>
