@@ -9,10 +9,15 @@ import styles from "./NavbarMenu.module.css";
 
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+import TripSelectModal from "@/components/TripSelectModal";
 
 const NavbarMenu = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeLink, setActiveLink] = useState("inicio");
+    const [showTripModal, setShowTripModal] = useState(false);
+    const [trips, setTrips] = useState<{ _id: string; name: string }[]>([]);
+    const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+    const [user, setUser] = useState<{ email?: string }>({});
     const pathname = usePathname();
 
     const toggleMenu = () => {
@@ -39,6 +44,33 @@ const NavbarMenu = () => {
             document.body.classList.remove(styles.noScroll);
         }
     }, [pathname, menuOpen]);
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        setUser(storedUser);
+        const storedTripId = localStorage.getItem('selectedTripId');
+        if (storedTripId) setSelectedTripId(storedTripId);
+    }, []);
+
+    useEffect(() => {
+        if (!user.email) return;
+        fetch(`https://trip-managment.onrender.com/api/users/email/${user.email}`)
+            .then(res => res.json())
+            .then(data => {
+                setTrips(data.payload?.trips || []);
+            });
+    }, [user.email]);
+
+    const handleChangeTrip = () => {
+        setShowTripModal(true);
+    };
+
+    const handleSelectTrip = (tripId: string) => {
+        setSelectedTripId(tripId);
+        localStorage.setItem('selectedTripId', tripId);
+        setShowTripModal(false);
+        window.location.reload(); // Para que la página principal se actualice con el nuevo viaje
+    };
 
     return (
         <nav className={`${styles.navbar} fixed-top`}>
@@ -69,23 +101,27 @@ const NavbarMenu = () => {
                             >
                                 Agregar viaje
                             </Link>
-                            <Link
-                                href="/"
+                            {/* Cambiar de viaje: muestra el modal en vez de navegar */}
+                            <span
                                 className={`${styles.linkMenu} ${activeLink === "changeTrip" ? styles.activeLink : ""}`}
-                                onClick={() => handleLinkClick("changeTrip")}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => {
+                                    handleLinkClick("changeTrip");
+                                    handleChangeTrip();
+                                }}
                             >
                                 Cambiar de viaje
-                            </Link>
+                            </span>
                             <Link
                                 href="/login"
                                 className={`${styles.linkMenu} ${styles.logoutLink}`}
                                 onClick={() => {
-                                    // Elimina autenticación
                                     localStorage.removeItem('loggedIn');
                                     localStorage.removeItem('user');
+                                    localStorage.removeItem('selectedTripId');
                                     document.cookie = "loggedIn=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
                                     closeMenu();
-                                    window.location.href = "/login"; // Fuerza recarga total
+                                    window.location.href = "/login";
                                 }}
                             >
                                 Cerrar sesión
@@ -105,6 +141,15 @@ const NavbarMenu = () => {
                         </Link>
                     </div>
                 </div>
+                {/* Modal de selección de viaje */}
+                {showTripModal && trips.length > 1 && (
+                    <TripSelectModal
+                        trips={trips}
+                        selectedTripId={selectedTripId}
+                        onSelect={handleSelectTrip}
+                        onClose={() => setShowTripModal(false)}
+                    />
+                )}
             </Container>
         </nav>
     );

@@ -7,11 +7,11 @@ import { FaBus, FaBed } from "react-icons/fa";
 import { Container } from "react-bootstrap";
 import ActivityCard from "@/components/ActivityCard";
 import HeroCarousel from "@/components/HeroCarousel";
+import TripSelectModal from "@/components/TripSelectModal";
 
 export default function Home() {
   const [location, setLocation] = useState("Cargando ubicación...");
   const [dateStr, setDateStr] = useState("");
-  //const [userName, setUserName] = useState("Usuario");// Estado para el nombre del usuario
   type Trip = {
     _id: string;
     name: string;
@@ -20,6 +20,7 @@ export default function Home() {
   
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
+  const [showTripModal, setShowTripModal] = useState(false);
   interface TripData {
     budget: {
       dailyBudget: number;
@@ -34,6 +35,7 @@ export default function Home() {
       name?: string;
       checkin?: string;
     };
+    city?: string;
     // Agrega aquí otras propiedades relevantes si las hay
   }
 
@@ -51,25 +53,40 @@ export default function Home() {
   // 2. Limpiar estados cuando cambia el usuario
   useEffect(() => {
     setTrips([]);
-    setSelectedTripId(null);
     setTripData(null);
+    setShowTripModal(false);
+    // Solo limpiar selectedTripId si el usuario realmente cambió (no en cada recarga)
+    // Si quieres limpiar solo cuando cambia el email, puedes comparar con un ref previo
+    // localStorage.removeItem('selectedTripId');
   }, [user.email]);
 
   // 3. Cuando user.email esté disponible, cargar los viajes
   useEffect(() => {
-    if (!user.email) return; // Espera a que user.email esté definido
+    if (!user.email) return;
     setLoadingTrips(true);
-    console.log("Consultando viajes para:", user.email);
     fetch(`https://trip-managment.onrender.com/api/users/email/${user.email}`)
       .then(res => res.json())
       .then(data => {
         const userData = data.payload;
         setTrips(userData?.trips || []);
+        const storedTripId = localStorage.getItem('selectedTripId');
         if (userData?.trips?.length === 1) {
           setSelectedTripId(userData.trips[0]._id);
+          setShowTripModal(false);
+        } else if (userData?.trips?.length > 1) {
+          // Si hay un tripId guardado y es válido, no mostrar el modal
+          if (storedTripId && userData.trips.some((t: any) => t._id === storedTripId)) {
+            setSelectedTripId(storedTripId);
+            setShowTripModal(false);
+          } else {
+            setSelectedTripId(null);
+            setShowTripModal(true);
+          }
+        } else {
+          setSelectedTripId(null);
+          setShowTripModal(false);
         }
         setLoadingTrips(false);
-        console.log("Viajes recibidos:", userData?.trips);
       })
       .catch(() => setLoadingTrips(false));
   }, [user.email]);
@@ -81,7 +98,7 @@ export default function Home() {
       return;
     }
     setLoadingTripData(true);
-    const fecha =new Date(); // "2025-06-08"; // O la fecha que quieras consultar
+    const fecha = new Date();
     fetch(`https://trip-managment.onrender.com/api/trips/dayData/${selectedTripId}?date=${fecha}`)
       .then(res => res.json())
       .then(data => {
@@ -89,6 +106,17 @@ export default function Home() {
         setLoadingTripData(false);
       })
       .catch(() => setLoadingTripData(false));
+  }, [selectedTripId]);
+
+  // Sincronizar selectedTripId con localStorage
+  useEffect(() => {
+    const storedTripId = localStorage.getItem('selectedTripId');
+    if (storedTripId) setSelectedTripId(storedTripId);
+  }, []);
+  useEffect(() => {
+    if (selectedTripId) {
+      localStorage.setItem('selectedTripId', selectedTripId);
+    }
   }, [selectedTripId]);
 
   // Geolocalización y fecha (igual que antes)
@@ -133,6 +161,18 @@ export default function Home() {
   // Render
   return (
     <div>
+      {/* Modal de selección de viaje */}
+      {showTripModal && trips.length > 1 && (
+        <TripSelectModal
+          trips={trips}
+          selectedTripId={selectedTripId}
+          onSelect={tripId => {
+            setSelectedTripId(tripId);
+            setShowTripModal(false);
+          }}
+          onClose={() => setShowTripModal(false)}
+        />
+      )}
       <div className={styles.carruselContainer}>
         <HeroCarousel />
         <div className={styles.title}>
@@ -141,6 +181,12 @@ export default function Home() {
       </div>
       <div className={styles.mainContent}>
         <div className={styles.infoContainer}>
+          {/* Mostrar el nombre del viaje seleccionado arriba de la localización */}
+          {selectedTripId && trips.length > 0 && (
+            <div style={{ fontWeight: 'bold', fontSize: '1.2em', marginBottom: 4 }}>
+              {trips.find(t => t._id === selectedTripId)?.name}
+            </div>
+          )}
           <div className={styles.location}>
             <BsGeoAltFill className={styles.icon} />
             <span>{location}</span>
@@ -153,21 +199,6 @@ export default function Home() {
             {loadingTrips && <p>Cargando viajes...</p>}
             {/* Sin viajes */}
             {!loadingTrips && trips.length === 0 && <p>No hay viajes para este usuario.</p>}
-            {/* Selector de viajes si hay más de uno */}
-            {!loadingTrips && trips.length > 1 && (
-              <div>
-                <label>Selecciona un viaje: </label>
-                <select
-                  value={selectedTripId || ""}
-                  onChange={e => setSelectedTripId(e.target.value)}
-                >
-                  <option value="" disabled>Elige un viaje</option>
-                  {trips.map(trip => (
-                    <option key={trip._id} value={trip._id}>{trip.name}</option>
-                  ))}
-                </select>
-              </div>
-            )}
             {/* Datos del viaje */}
             {loadingTripData && <p>Cargando datos del viaje...</p>}
             {tripData && (
@@ -186,7 +217,6 @@ export default function Home() {
                     </ul>
                   </div>
                 </div>
-                {/* Puedes adaptar los siguientes ActivityCard según los datos de tu viaje */}
                 <ActivityCard
                   title="Próximo traslado"
                   icon={<FaBus className="customIcon" />}
