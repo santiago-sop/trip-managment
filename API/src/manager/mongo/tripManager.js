@@ -93,6 +93,7 @@ export default class TripManager {
         return {
             city: activity?.city || null,
             activity: activity?.name || null,
+            activityId: activity?._id || null,
             transfer: transfer
                 ? { name: transfer.name, startTime: transfer.startTime, transferId: transfer._id }
                 : null,
