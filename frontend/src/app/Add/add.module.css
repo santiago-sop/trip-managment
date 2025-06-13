@@ -4,13 +4,13 @@
   padding: 2rem;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+  z-index: -1;
+   margin-bottom: 3rem;
+  /* position: relative; */
 }
 
-.addContainer {
-  margin-bottom: 3rem; /* o el alto de tu footer */
-}
+
 
 .addContainer h1 {
   color: #4f46e5;
@@ -46,8 +46,34 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.3s ease-in-out;
+  margin-bottom: 5rem;
 }
 
 .submitButton:hover {
   background: #3b39cc;
 }
+
+.selectorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.closeButton {
+  background-color: var(--rosado);
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+  position: fixed; 
+   top: 80px; 
+  right: 20px; 
+}
+
+
+

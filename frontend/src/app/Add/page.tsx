@@ -115,7 +115,6 @@ const Page = () => {
   // Obtener la fecha de hoy en ambos formatos
   const today = new Date();
   const pad = (n: number) => n.toString().padStart(2, '0');
-  const yyyyMMdd = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
   const ddMMyy = `${pad(today.getDate())}-${pad(today.getMonth() + 1)}-${today.getFullYear().toString().slice(-2)}`;
 
   // Inicializar fechas por defecto al montar el componente
@@ -181,18 +180,24 @@ const Page = () => {
     <div className={styles.addContainer}>
       <h1>Agregar Nuevo Elemento</h1>
       {successMsg && <div style={{ color: 'green', fontWeight: 'bold', marginBottom: 16 }}>{successMsg}</div>}
+      <div className='position-relative'>
+        <label className={styles.label}>¿Qué deseas agregar?</label>
+        <select className={styles.select} value={selectedType} onChange={handleTypeChange}>
+          <option value="">Selecciona una opción</option>
+          <option value="activity">Actividad</option>
+          <option value="stays">Estadía</option>
+          <option value="transfers">Traslado</option>
+          <option value="blog">Blog</option>
+          <option value="expense">Gasto</option>
+          <option value="budget">Plata al presupuesto</option>
+        </select>
 
-      <label className={styles.label}>¿Qué deseas agregar?</label>
-      <select className={styles.select} value={selectedType} onChange={handleTypeChange}>
-        <option value="">Selecciona una opción</option>
-        <option value="activity">Actividad</option>
-        <option value="stays">Estadía</option>
-        <option value="transfers">Traslado</option>
-        <option value="blog">Blog</option>
-        <option value="expense">Gasto</option>
-        <option value="budget">Plata al presupuesto</option>
-      </select>
-
+        <div className={styles.selectorRow}>
+          <button type="button" className={styles.closeButton} onClick={() => setSelectedType('')}>
+            ✖
+          </button>
+        </div>
+      </div>
       {selectedType && (
         <form onSubmit={handleSubmit} className={styles.form}>
           {/* <label className={styles.label}>Nombre</label>
