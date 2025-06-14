@@ -38,6 +38,7 @@ export default function AddTrip() {
       }
     } catch (err) {
       setMsg("Error de conexión");
+      console.log(err);
     }
   };
 
@@ -59,6 +60,7 @@ export default function AddTrip() {
       }
     } catch (err) {
       setMsg("Error de conexión");
+      console.log(err);
     }
   };
 

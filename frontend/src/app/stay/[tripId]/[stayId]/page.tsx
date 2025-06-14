@@ -5,7 +5,18 @@ import { useParams, useRouter } from "next/navigation";
 export default function StayPage() {
   const { tripId, stayId } = useParams();
   const router = useRouter();
-  const [stay, setStay] = useState<any>(null);
+  type Stay = {
+    name: string;
+    startDate: string;
+    endDate: string;
+    checkin: string;
+    checkout: string;
+    location: string;
+    cost: number;
+    paid: boolean;
+    // ...otros campos
+  };
+  const [stay, setStay] = useState<Stay | null>(null);
   const [edit, setEdit] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -20,7 +31,7 @@ export default function StayPage() {
           setStay(null);
         }
       });
-  }, [stayId]);
+  }, [stayId, tripId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;

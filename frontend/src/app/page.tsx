@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from './page.module.css';
 import { BsGeoAltFill } from "react-icons/bs";
-import { FaBus, FaBed, FaArrowRight } from "react-icons/fa";
+//import { FaBus, FaBed, FaArrowRight } from "react-icons/fa";
+import { FaBus, FaBed} from "react-icons/fa";
 import { Container } from "react-bootstrap";
 import ActivityCard from "@/components/ActivityCard";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -85,7 +86,8 @@ export default function Home() {
           setShowTripModal(false);
         } else if (userData?.trips?.length > 1) {
           // Si hay un tripId guardado y es válido, no mostrar el modal
-          if (storedTripId && userData.trips.some((t: any) => t._id === storedTripId)) {
+          if (storedTripId && userData.trips.some((t: Trip) => t._id === storedTripId))
+          {
             setSelectedTripId(storedTripId);
             setShowTripModal(false);
           } else {

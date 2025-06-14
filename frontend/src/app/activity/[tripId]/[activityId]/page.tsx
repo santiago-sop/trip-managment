@@ -5,7 +5,16 @@ import { useParams, useRouter } from "next/navigation";
 export default function ActivityPage() {
   const { tripId, activityId } = useParams();
   const router = useRouter();
-  const [activity, setActivity] = useState<any>(null);
+  type Activity = {
+    name: string;
+    description: string;
+    date: string;
+    city: string;
+    cost: number;
+    paid: boolean;
+    // ...otros campos
+  };
+  const [activity, setActivity] = useState<Activity | null>(null);
   const [edit, setEdit] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -14,7 +23,7 @@ export default function ActivityPage() {
     fetch(`https://trip-managment.onrender.com/api/trips/activity/${tripId}/${activityId}`)
       .then(res => res.json())
       .then(data => setActivity(data.payload.activities[0]));
-  }, [activityId]);
+  }, [activityId, tripId]);
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;

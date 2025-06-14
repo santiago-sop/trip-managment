@@ -5,7 +5,19 @@ import { useParams, useRouter } from "next/navigation";
 export default function TransferPage() {
   const { tripId, transferId } = useParams();
   const router = useRouter();
-  const [transfer, setTransfer] = useState<any>(null);
+  type Transfer = {
+    name: string;
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
+    startLocation: string;
+    endLocation: string;
+    cost: number;
+    paid: boolean;
+    // ...otros campos
+  };
+  const [transfer, setTransfer] = useState<Transfer | null>(null);
   const [edit, setEdit] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -13,7 +25,7 @@ export default function TransferPage() {
     fetch(`https://trip-managment.onrender.com/api/trips/transfer/${tripId}/${transferId}`)
       .then(res => res.json())
       .then(data => setTransfer(data.payload.transfers[0]));
-  }, [transferId]);
+  }, [transferId, tripId]);
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
