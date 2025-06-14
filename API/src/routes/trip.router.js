@@ -155,7 +155,7 @@ tripsRouter.delete("/participant/:tripId/:userId", async (req, res) => {
 });
 
 //Activities
-tripsRouter.get("activity/:tripId/:activityId", async (req, res) => {
+tripsRouter.get("/activity/:tripId/:activityId", async (req, res) => {
     try {
         const { tripId, activityId } = req.params;
         if (!tripId || !activityId) {

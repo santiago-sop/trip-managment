@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 export default function TransferPage() {
-  const { transferId } = useParams();
+  const { tripId, transferId } = useParams();
   const router = useRouter();
   const [transfer, setTransfer] = useState<any>(null);
   const [edit, setEdit] = useState(false);
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    fetch(`https://trip-managment.onrender.com/api/trips/transfer/${transferId}`)
+    fetch(`https://trip-managment.onrender.com/api/trips/transfer/${tripId}/${transferId}`)
       .then(res => res.json())
       .then(data => setTransfer(data.payload));
   }, [transferId]);
@@ -24,7 +24,7 @@ export default function TransferPage() {
   };
 
   const handleUpdate = async () => {
-    const res = await fetch(`https://trip-managment.onrender.com/api/trips/transfer/${transferId}`, {
+    const res = await fetch(`https://trip-managment.onrender.com/api/trips/transfer/${tripId}/${transferId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(transfer)
@@ -35,7 +35,7 @@ export default function TransferPage() {
   };
 
   const handleDelete = async () => {
-    const res = await fetch(`https://trip-managment.onrender.com/api/trips/transfer/${transferId}`, {
+    const res = await fetch(`https://trip-managment.onrender.com/api/trips/transfer/${tripId}/${transferId}`, {
       method: "DELETE"
     });
     if (res.ok) router.push("/");

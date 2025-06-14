@@ -11,7 +11,7 @@ export default function StayPage() {
 
   useEffect(() => {
     console.log("Fetching stay with ID:", stayId);
-    fetch(`https://trip-managment.onrender.com/api/trips/stay/${stayId}`)
+    fetch(`https://trip-managment.onrender.com/api/trips/stay/${tripId}/${stayId}`)
       .then(res => res.json())
       .then(data => {
         if (data.payload && Array.isArray(data.payload.stays) && data.payload.stays.length > 0) {

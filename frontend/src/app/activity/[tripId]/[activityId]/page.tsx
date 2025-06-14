@@ -11,7 +11,7 @@ export default function ActivityPage() {
 
   useEffect(() => {
     console.log("Fetching activity with ID:", activityId);
-    fetch(`https://trip-managment.onrender.com/api/trips/activity/${activityId}`)
+    fetch(`https://trip-managment.onrender.com/api/trips/activity/${tripId}/${activityId}`)
       .then(res => res.json())
       .then(data => setActivity(data.payload));
   }, [activityId]);
