@@ -127,7 +127,7 @@ const Page = () => {
       checkInDate: ddMMyy,
       checkOutDate: ddMMyy,
     }));
-  }, []);
+  }, [ddMMyy]);
 
   // Función para convertir dd-MM-yy a yyyy-MM-dd
   const toApiDate = (dateStr: string) => {
