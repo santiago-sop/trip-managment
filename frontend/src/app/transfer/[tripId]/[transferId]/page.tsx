@@ -12,7 +12,7 @@ export default function TransferPage() {
   useEffect(() => {
     fetch(`https://trip-managment.onrender.com/api/trips/transfer/${tripId}/${transferId}`)
       .then(res => res.json())
-      .then(data => setTransfer(data.payload));
+      .then(data => setTransfer(data.payload.transfers[0]));
   }, [transferId]);
 
   const handleChange = (e: any) => {
@@ -47,33 +47,87 @@ export default function TransferPage() {
   return (
     <div style={{ maxWidth: 500, margin: "2rem auto" }}>
       <h2>Traslado</h2>
+      <div>
+        <div>
+          <span>Nombre: </span>
+          {edit ? (
+            <input name="name" value={transfer.name || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.name}</span>
+          )}
+        </div>
+        <div>
+          <span>Fecha inicio: </span>
+          {edit ? (
+            <input name="startDate" type="date" value={transfer.startDate?.slice(0,10) || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.startDate?.slice(0,10)}</span>
+          )}
+        </div>
+        <div>
+          <span>Hora inicio: </span>
+          {edit ? (
+            <input name="startTime" value={transfer.startTime || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.startTime}</span>
+          )}
+        </div>
+        <div>
+          <span>Desde: </span>
+          {edit ? (
+            <input name="startLocation" value={transfer.startLocation || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.startLocation}</span>
+          )}
+        </div>
+        <div>
+          <span>Fecha fin: </span>
+          {edit ? (
+            <input name="endDate" type="date" value={transfer.endDate?.slice(0,10) || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.endDate?.slice(0,10)}</span>
+          )}
+        </div>
+        <div>
+          <span>Hora fin: </span>
+          {edit ? (
+            <input name="endTime" value={transfer.endTime || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.endTime}</span>
+          )}
+        </div>
+        <div>
+          <span>Hasta: </span>
+          {edit ? (
+            <input name="endLocation" value={transfer.endLocation || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.endLocation}</span>
+          )}
+        </div>
+        <div>
+          <span>Costo: </span>
+          {edit ? (
+            <input name="cost" type="number" value={transfer.cost || ""} onChange={handleChange} />
+          ) : (
+            <span>{transfer.cost}</span>
+          )}
+        </div>
+        <div>
+          <span>Pagado: </span>
+          {edit ? (
+            <input name="paid" type="checkbox" checked={!!transfer.paid} onChange={handleChange} />
+          ) : (
+            <span>{transfer.paid ? "Sí" : "No"}</span>
+          )}
+        </div>
+      </div>
       {edit ? (
         <>
-          <input name="name" value={transfer.name} onChange={handleChange} />
-          <input name="startDate" type="date" value={transfer.startDate?.slice(0,10)} onChange={handleChange} />
-          <input name="startTime" value={transfer.startTime} onChange={handleChange} />
-          <input name="startLocation" value={transfer.startLocation} onChange={handleChange} />
-          <input name="endDate" type="date" value={transfer.endDate?.slice(0,10)} onChange={handleChange} />
-          <input name="endTime" value={transfer.endTime} onChange={handleChange} />
-          <input name="endLocation" value={transfer.endLocation} onChange={handleChange} />
-          <input name="cost" type="number" value={transfer.cost} onChange={handleChange} />
-          <label>
-            Pagado <input name="paid" type="checkbox" checked={transfer.paid} onChange={handleChange} />
-          </label>
           <button onClick={handleUpdate}>Guardar</button>
           <button onClick={() => setEdit(false)}>Cancelar</button>
         </>
       ) : (
         <>
-          <div>Nombre: {transfer.name}</div>
-          <div>Fecha inicio: {transfer.startDate?.slice(0,10)}</div>
-          <div>Hora inicio: {transfer.startTime}</div>
-          <div>Desde: {transfer.startLocation}</div>
-          <div>Fecha fin: {transfer.endDate?.slice(0,10)}</div>
-          <div>Hora fin: {transfer.endTime}</div>
-          <div>Hasta: {transfer.endLocation}</div>
-          <div>Costo: {transfer.cost}</div>
-          <div>Pagado: {transfer.paid ? "Sí" : "No"}</div>
           <button onClick={() => setEdit(true)}>Modificar</button>
           <button onClick={handleDelete}>Eliminar</button>
           <div>{msg}</div>

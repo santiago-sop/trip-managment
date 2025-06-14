@@ -13,7 +13,7 @@ export default function ActivityPage() {
     console.log("Fetching activity with ID:", activityId);
     fetch(`https://trip-managment.onrender.com/api/trips/activity/${tripId}/${activityId}`)
       .then(res => res.json())
-      .then(data => setActivity(data.payload));
+      .then(data => setActivity(data.payload.activities[0]));
   }, [activityId]);
 
   const handleChange = (e: any) => {
@@ -48,27 +48,63 @@ export default function ActivityPage() {
   return (
     <div style={{ maxWidth: 500, margin: "2rem auto" }}>
       <h2>Actividad</h2>
+      <div>
+        <div>
+          <span>Nombre: </span>
+          {edit ? (
+            <input name="name" value={activity.name || ""} onChange={handleChange} />
+          ) : (
+            <span>{activity.name}</span>
+          )}
+        </div>
+        <div>
+          <span>Descripción: </span>
+          {edit ? (
+            <input name="description" value={activity.description || ""} onChange={handleChange} />
+          ) : (
+            <span>{activity.description}</span>
+          )}
+        </div>
+        <div>
+          <span>Fecha: </span>
+          {edit ? (
+            <input name="date" type="date" value={activity.date?.slice(0,10) || ""} onChange={handleChange} />
+          ) : (
+            <span>{activity.date?.slice(0,10)}</span>
+          )}
+        </div>
+        <div>
+          <span>Ciudad: </span>
+          {edit ? (
+            <input name="city" value={activity.city || ""} onChange={handleChange} />
+          ) : (
+            <span>{activity.city}</span>
+          )}
+        </div>
+        <div>
+          <span>Costo: </span>
+          {edit ? (
+            <input name="cost" type="number" value={activity.cost || ""} onChange={handleChange} />
+          ) : (
+            <span>{activity.cost}</span>
+          )}
+        </div>
+        <div>
+          <span>Pagado: </span>
+          {edit ? (
+            <input name="paid" type="checkbox" checked={!!activity.paid} onChange={handleChange} />
+          ) : (
+            <span>{activity.paid ? "Sí" : "No"}</span>
+          )}
+        </div>
+      </div>
       {edit ? (
         <>
-          <input name="name" value={activity.name} onChange={handleChange} />
-          <input name="description" value={activity.description} onChange={handleChange} />
-          <input name="date" type="date" value={activity.date?.slice(0,10)} onChange={handleChange} />
-          <input name="city" value={activity.city} onChange={handleChange} />
-          <input name="cost" type="number" value={activity.cost} onChange={handleChange} />
-          <label>
-            Pagado <input name="paid" type="checkbox" checked={activity.paid} onChange={handleChange} />
-          </label>
           <button onClick={handleUpdate}>Guardar</button>
           <button onClick={() => setEdit(false)}>Cancelar</button>
         </>
       ) : (
         <>
-          <div>Nombre: {activity.name}</div>
-          <div>Descripción: {activity.description}</div>
-          <div>Fecha: {activity.date?.slice(0,10)}</div>
-          <div>Ciudad: {activity.city}</div>
-          <div>Costo: {activity.cost}</div>
-          <div>Pagado: {activity.paid ? "Sí" : "No"}</div>
           <button onClick={() => setEdit(true)}>Modificar</button>
           <button onClick={handleDelete}>Eliminar</button>
           <div>{msg}</div>
