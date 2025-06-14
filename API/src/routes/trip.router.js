@@ -155,12 +155,13 @@ tripsRouter.delete("/participant/:tripId/:userId", async (req, res) => {
 });
 
 //Activities
-tripsRouter.get("activity/:activityId", async (req, res) => {
+tripsRouter.get("activity/:tripId/:activityId", async (req, res) => {
     try {
-        const { activityId } = req.params;
-        if (!activityId) {
-            return res.status(400).send({ status: "error", message: "Activity ID is required" });
+        const { tripId, activityId } = req.params;
+        if (!tripId || !activityId) {
+            return res.status(400).send({ status: "error", message: "Trip ID and Activity ID is required" });
         }
+
         const activity = await tripService.getActivityById(activityId);
         if (!activity) {
             return res.status(404).send({ status: "error", message: "Activity not found" });
@@ -244,11 +245,11 @@ tripsRouter.delete("/activity/:tripId/:activityId", async (req, res) => {
 });
 
 //Stays
-tripsRouter.get("/stay/:stayId", async (req, res) => {
+tripsRouter.get("/stay/:tripId/:stayId", async (req, res) => {
     try {
-        const { stayId } = req.params;
-        if (!stayId) {
-            return res.status(400).send({ status: "error", message: "Stay ID is required" });
+        const { tripId, stayId } = req.params;
+        if (!tripId || !stayId) {
+            return res.status(400).send({ status: "error", message: "Trip ID and Stay ID is required" });
         }
         const stay = await tripService.getStayById(stayId);
         if (!stay) {
@@ -357,11 +358,11 @@ tripsRouter.delete("/stay/:tripId/:stayId", async (req, res) => {
 });
 
 //Transfers
-tripsRouter.get("/transfer/:transferID", async (req, res) => {
+tripsRouter.get("/transfer/:tripId/:transferID", async (req, res) => {
     try {
-        const { transferID } = req.params;
-        if (!transferID) {
-            return res.status(400).send({ status: "error", message: "Transfer ID is required" });
+        const { tripId, transferID } = req.params;
+        if (!tripId || !transferID) {
+            return res.status(400).send({ status: "error", message: "Trip ID  and Transfer ID is required" });
         }
         const transfer = await tripService.getTransferById(transferID);
         if (!transfer) {

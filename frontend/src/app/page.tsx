@@ -37,12 +37,15 @@ export default function Home() {
     transfer?: {
       name?: string;
       startTime?: string;
+      transferId?: string;
     };
     stay?: {
       name?: string;
       checkin?: string;
+      stayId?: string;
     };
     city?: string;
+    activityId?: string;
     // Agrega aquí otras propiedades relevantes si las hay
   }
 
@@ -247,8 +250,8 @@ export default function Home() {
                       </ul>
                     </div>
                   </div>
-                  <Link href="/activity" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center' }}>
-                    <FaArrowRight />
+                  <Link href={`/activity/${selectedTripId}/${tripData.activityId}`}>
+                    <button className="arrow-btn">{/* icono flecha */}→</button>
                   </Link>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -258,8 +261,8 @@ export default function Home() {
                     location={tripData.transfer?.name || "No definido"}
                     description={tripData.transfer?.startTime || ""}
                   />
-                  <Link href="/transfer" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center', alignSelf: 'flex-start' }}>
-                    <FaArrowRight />
+                  <Link href={`/transfer/${selectedTripId}/${tripData.transfer?.transferId}`}>
+                    <button className="arrow-btn">→</button>
                   </Link>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -269,8 +272,8 @@ export default function Home() {
                     location={tripData.stay?.name || "No definido"}
                     description={tripData.stay?.checkin || ""}
                   />
-                  <Link href="/stay" style={{ marginLeft: 12, color: '#007bff', fontSize: 22, display: 'flex', alignItems: 'center', alignSelf: 'flex-start' }}>
-                    <FaArrowRight />
+                  <Link href={`/stay/${selectedTripId}/${tripData.stay?.stayId}`}>
+                    <button className="arrow-btn">→</button>
                   </Link>
                 </div>
               </>
