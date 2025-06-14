@@ -8,7 +8,7 @@ const app = express();
 
 // Habilita CORS para tu frontend local
 app.use(cors({
-  origin: 'http://localhost:3000', // Cambia esto según tu frontend
+  origin: 'https://trip-managment-app.onrender.com', // Cambia esto según tu frontend
   credentials: true
 }));
 
