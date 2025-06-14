@@ -35,8 +35,8 @@ export default function StayPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setStay((prev: any) => ({
-      ...prev,
+    setStay((prev) => ({
+      ...prev!,
       [name]: type === "checkbox" ? checked : value
     }));
   };

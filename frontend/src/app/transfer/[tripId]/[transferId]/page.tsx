@@ -27,10 +27,10 @@ export default function TransferPage() {
       .then(data => setTransfer(data.payload.transfers[0]));
   }, [transferId, tripId]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setTransfer((prev: any) => ({
-      ...prev,
+    setTransfer((prev) => ({
+      ...prev!,
       [name]: type === "checkbox" ? checked : value
     }));
   };

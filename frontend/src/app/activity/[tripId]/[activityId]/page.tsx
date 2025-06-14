@@ -25,10 +25,10 @@ export default function ActivityPage() {
       .then(data => setActivity(data.payload.activities[0]));
   }, [activityId, tripId]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setActivity((prev: any) => ({
-      ...prev,
+    setActivity((prev) => ({
+      ...prev!,
       [name]: type === "checkbox" ? checked : value
     }));
   };
